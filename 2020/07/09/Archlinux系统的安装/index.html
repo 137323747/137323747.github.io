@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.devopsai.cn","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Archlinux系统的安装准备环境 准备镜像：镜像下载地址：https:&#x2F;&#x2F;archlinux.org&#x2F;download&#x2F;    准备工具：实体机或虚拟机（VMware），U盘，UltraISO软件，下载好的镜像文件  还要看电脑是UEFI模式的还是BIOS模式的 这个可以在主板中找到 首先插上U盘（U盘文件一定备份好了这个过程U盘将被格式化）——&gt;打开软件UltraISO–&gt;继续使">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Archlinux系统的安装">
+<meta property="og:url" content="http://www.devopsai.cn/2020/07/09/Archlinux%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%AE%89%E8%A3%85/index.html">
+<meta property="og:site_name" content="向往的生活">
+<meta property="og:description" content="Archlinux系统的安装准备环境 准备镜像：镜像下载地址：https:&#x2F;&#x2F;archlinux.org&#x2F;download&#x2F;    准备工具：实体机或虚拟机（VMware），U盘，UltraISO软件，下载好的镜像文件  还要看电脑是UEFI模式的还是BIOS模式的 这个可以在主板中找到 首先插上U盘（U盘文件一定备份好了这个过程U盘将被格式化）——&gt;打开软件UltraISO–&gt;继续使">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="f:%5Cmyblog%5Cimages%5Cimage-20200709090456452.png">
+<meta property="og:image" content="f:%5Cmyblog%5Cimages%5Cimage-20200709145748118.png">
+<meta property="og:image" content="f:%5Cmyblog%5Cimages%5Cimage-20200709151925832.png">
+<meta property="og:image" content="f:%5Cmyblog%5Cimages%5Cimage-20200709153112953.png">
+<meta property="og:image" content="f:%5Cmyblog%5Cimages%5Cimage-20200709153249785.png">
+<meta property="og:image" content="f:%5Cmyblog%5Cimages%5Cimage-20200709153855487.png">
+<meta property="og:image" content="f:%5Cmyblog%5Cimages%5Cimage-20200709160017921.png">
+<meta property="og:image" content="f:%5Cmyblog%5Cimages%5Cimage-20200709161116546.png">
+<meta property="og:image" content="f:%5Cmyblog%5Cimages%5Cimage-20200709163852111.png">
+<meta property="article:published_time" content="2020-07-09T09:44:45.539Z">
+<meta property="article:modified_time" content="2020-07-09T09:47:03.142Z">
+<meta property="article:author" content="骑驴的绅士">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="f:%5Cmyblog%5Cimages%5Cimage-20200709090456452.png">
+
+<link rel="canonical" href="http://www.devopsai.cn/2020/07/09/Archlinux%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%AE%89%E8%A3%85/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Archlinux系统的安装 | 向往的生活</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="向往的生活" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">向往的生活</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">干翻从前的自己</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.devopsai.cn/2020/07/09/Archlinux%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%AE%89%E8%A3%85/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="骑驴的绅士">
+      <meta itemprop="description" content="这是一个技术博客">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="向往的生活">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Archlinux系统的安装
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-07-09 17:44:45 / 修改时间：17:47:03" itemprop="dateCreated datePublished" datetime="2020-07-09T17:44:45+08:00">2020-07-09</time>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>3.7k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>3 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Archlinux系统的安装"><a href="#Archlinux系统的安装" class="headerlink" title="Archlinux系统的安装"></a>Archlinux系统的安装</h1><h2 id="准备环境"><a href="#准备环境" class="headerlink" title="准备环境"></a>准备环境</h2><p> 准备镜像：镜像下载地址：<a href="https://archlinux.org/download/" target="_blank" rel="noopener">https://archlinux.org/download/</a>  </p>
+<p> 准备工具：实体机或虚拟机（VMware），U盘，UltraISO软件，下载好的镜像文件</p>
+<p> 还要看电脑是UEFI模式的还是BIOS模式的 这个可以在主板中找到</p>
+<p>首先插上U盘（U盘文件一定备份好了这个过程U盘将被格式化）——&gt;打开软件UltraISO–&gt;继续使用–&gt;左上角文件打开（找到你下载的Archlinux.iso文件）打开–&gt;选择启动(B)–&gt;写入硬盘镜像—&gt;硬盘驱动器选择U盘–&gt;点击写入等待完成即可</p>
+<a id="more"></a>
+
+<h2 id="开始安装"><a href="#开始安装" class="headerlink" title="开始安装"></a>开始安装</h2><p>不会怎么选择U盘启动的根据自己电脑品牌自行百度</p>
+<p>进入到这个界面选择第一个回车（如果这个界面进不去可能是模式不对开机F2进入主板设置UEFI模式重新进入）</p>
+<p><img src="F:%5Cmyblog%5Cimages%5Cimage-20200709090456452.png" alt="image-20200709090456452"></p>
+<h3 id="验证启动模式"><a href="#验证启动模式" class="headerlink" title="验证启动模式"></a>验证启动模式</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ls &#x2F;sys&#x2F;firmware&#x2F;efi&#x2F;efivars</span><br></pre></td></tr></table></figure>
+
+<p>这个目录如果存在大量文件说明你的系统是UEFI启动的，如果不存在说明系统可能是BIOS或CSM模式启动模式（<strong>清楚自己启动模式注意下面安装步骤不同模式的不通安装方法</strong>）</p>
+<h3 id="连接网络"><a href="#连接网络" class="headerlink" title="连接网络"></a>连接网络</h3><h5 id="网线连接方式"><a href="#网线连接方式" class="headerlink" title="网线连接方式"></a>网线连接方式</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dhcpcd #获取地址</span><br></pre></td></tr></table></figure>
+
+<h5 id="无线连接方式"><a href="#无线连接方式" class="headerlink" title="无线连接方式"></a>无线连接方式</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wifi-menu  #选择你家里的无线输入密码即可</span><br></pre></td></tr></table></figure>
+
+<p>如果出x23\x46\2x78……报错连不上操作下面步骤</p>
+<p>把/etc/netctl/下的相关wifi名字的配置文件删掉，然后用ip命令把网卡down掉，重新用wifi-menu连一次</p>
+<h5 id="ADSL宽带连接"><a href="#ADSL宽带连接" class="headerlink" title="ADSL宽带连接"></a>ADSL宽带连接</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pppoe-setup</span><br><span class="line"></span><br><span class="line">systemctl start adsl  #这个模式没怎么用过</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="测试网络是否连接成功"><a href="#测试网络是否连接成功" class="headerlink" title="测试网络是否连接成功"></a>测试网络是否连接成功</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ping www.baidu.com</span><br></pre></td></tr></table></figure>
+
+<h5 id="更新系统时间"><a href="#更新系统时间" class="headerlink" title="更新系统时间"></a>更新系统时间</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">timedatectl set-ntp true</span><br></pre></td></tr></table></figure>
+
+<h5 id="查看磁盘分区盘符命令及分区"><a href="#查看磁盘分区盘符命令及分区" class="headerlink" title="查看磁盘分区盘符命令及分区"></a>查看磁盘分区盘符命令及分区</h5><p>一般sda是我们的硬盘</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fidsk -l</span><br></pre></td></tr></table></figure>
+
+<p><img src="F:%5Cmyblog%5Cimages%5Cimage-20200709145748118.png" alt="image-20200709145748118"></p>
+<p>如果磁盘存在分区需要把原有分区删除（提前备份磁盘数据）我的磁盘是sda：50G</p>
+<p>我这里的分区方案</p>
+<p><strong>UEFI分区方式</strong></p>
+<table>
+<thead>
+<tr>
+<th>分区名称</th>
+<th align="center">设备标号</th>
+<th align="right">磁盘格式</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>根</td>
+<td align="center">/dev/sda1</td>
+<td align="right">剩余空间默认格式</td>
+</tr>
+<tr>
+<td>swap</td>
+<td align="center">/dev/sda2</td>
+<td align="right">linux swap</td>
+</tr>
+<tr>
+<td>home</td>
+<td align="center">/dev/sda3</td>
+<td align="right">默认</td>
+</tr>
+<tr>
+<td>boot</td>
+<td align="center">/dev/sda2</td>
+<td align="right">EFI system</td>
+</tr>
+</tbody></table>
+<p><strong>BIOS分区方式不需要boot分区</strong></p>
+<table>
+<thead>
+<tr>
+<th>分区名称</th>
+<th align="center">设备标号</th>
+<th align="right">磁盘格式</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>根</td>
+<td align="center">/dev/sda1</td>
+<td align="right">剩余空间默认格式</td>
+</tr>
+<tr>
+<td>swap</td>
+<td align="center">/dev/sda2</td>
+<td align="right">linux swap</td>
+</tr>
+<tr>
+<td>home</td>
+<td align="center">/dev/sda3</td>
+<td align="right">默认</td>
+</tr>
+</tbody></table>
+<p>分区命令cfdisk</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cfdisk &#x2F;dve&#x2F;sda</span><br></pre></td></tr></table></figure>
+
+<p><img src="F:%5Cmyblog%5Cimages%5Cimage-20200709151925832.png" alt="image-20200709151925832"></p>
+<p>swap分区时内存的2倍左右 boot分区500M左右  home目录自行分配不要台小 剩余的给根目录</p>
+<p>最下面的行时分区工具行</p>
+<p>Delete 是删除分区键盘上下键可以调节你要删掉的分区</p>
+<p>Resize 顾名思义就是重置，清除操作</p>
+<p>Quit 是退出</p>
+<p>Type 是选择分区的格式 linux  swap 和 EFI system 就是在这个里面选择 </p>
+<p>Write 是保存写入</p>
+<h5 id="选择分区格式"><a href="#选择分区格式" class="headerlink" title="选择分区格式"></a>选择分区格式</h5><p>选择Type 或者按t键找到下面linux swap格式</p>
+<p>/dev/sda3</p>
+<p> <img src="F:%5Cmyblog%5Cimages%5Cimage-20200709153112953.png" alt="image-20200709153112953"></p>
+<p>/dev/sda4</p>
+<p><img src="F:%5Cmyblog%5Cimages%5Cimage-20200709153249785.png" alt="image-20200709153249785"></p>
+<p>剩余分区默认格式</p>
+<p>最后记得光标选择type保存quit退出</p>
+<p>查看我们的分区是否存在</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsblk</span><br></pre></td></tr></table></figure>
+
+<p><img src="F:%5Cmyblog%5Cimages%5Cimage-20200709153855487.png" alt="image-20200709153855487"></p>
+<h5 id="格式化分区"><a href="#格式化分区" class="headerlink" title="格式化分区"></a>格式化分区</h5><p>/分区的格式化</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkfs.ext4 &#x2F;dev&#x2F;sda1</span><br></pre></td></tr></table></figure>
+
+<p>/home的格式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkfs.ext4 &#x2F;dev&#x2F;sda2</span><br></pre></td></tr></table></figure>
+
+<p>/boot的格式 （<strong>如果不是UEFI启动的不需要此步</strong>）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkfs.fat -F32 &#x2F;dev&#x2F;sda3</span><br></pre></td></tr></table></figure>
+
+<p>swap分区的格式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mkfswap &#x2F;dev&#x2F;sda4</span><br><span class="line">swapon &#x2F;dev&#x2F;sda4   #开启swap分区</span><br></pre></td></tr></table></figure>
+
+<h5 id="挂载我们格式化完的分区"><a href="#挂载我们格式化完的分区" class="headerlink" title="挂载我们格式化完的分区"></a>挂载我们格式化完的分区</h5><p>首先把/根分区挂载到 /mnt目录下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mount &#x2F;dev&#x2F;sda1 &#x2F;mnt</span><br></pre></td></tr></table></figure>
+
+<p>挂载我们的家目录home 挂载完根目录我们需要在/mnt下面新建个目录home</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mkdir &#x2F;mnt&#x2F;home</span><br><span class="line">mount &#x2F;dev&#x2F;sda2 &#x2F;mnt&#x2F;home</span><br></pre></td></tr></table></figure>
+
+<p><img src="F:%5Cmyblog%5Cimages%5Cimage-20200709160017921.png" alt="image-20200709160017921"></p>
+<p>挂载之后的结果</p>
+<h5 id="修改镜像源"><a href="#修改镜像源" class="headerlink" title="修改镜像源"></a>修改镜像源</h5><p>vim /etc/pacman.d/mirrorlist</p>
+<p>输入/China 找到中国的源回车 按n查找下一个找到tuna.tsinghua.edu.cn的源 按2dd 之后按gg到首行</p>
+<p>找个空位置p粘贴上去 之后在下面 加上  按i 找到下一行输入</p>
+<p>Server = <a href="http://mirrors.aliyun.com/archlinux/$repo/os/$arch" target="_blank" rel="noopener">http://mirrors.aliyun.com/archlinux/$repo/os/$arch</a></p>
+<p><img src="F:%5Cmyblog%5Cimages%5Cimage-20200709161116546.png" alt="image-20200709161116546"></p>
+<p>按ESC键  之后按shft + :（记得英文输入法）wq 保存退出</p>
+<h5 id="安装系统的基础包"><a href="#安装系统的基础包" class="headerlink" title="安装系统的基础包"></a>安装系统的基础包</h5><p>我们需要安装系统需要的基础包组到我们的磁盘也就是mnt 也就是安装系统还有一些工具（不包包括图形界面）linux-firmware 这个是硬件bai的固件。 很多硬件需要自己的固件du才能运行，这种东西类似于zhi硬件自己的操dao作系统</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pacstrap &#x2F;mnt base linux linux-firmware base-devel vim</span><br></pre></td></tr></table></figure>
+
+<h5 id="安装fstab"><a href="#安装fstab" class="headerlink" title="安装fstab"></a>安装fstab</h5><p>fstab 开机自动挂载我们的分区（-U添加uuid）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">genfstab -U &#x2F;mnt &gt;&gt; &#x2F;mnt&#x2F;etc&#x2F;fstab</span><br><span class="line">cat &#x2F;mnt&#x2F;etc&#x2F;fstab #如果是这样就对了</span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="F:%5Cmyblog%5Cimages%5Cimage-20200709163852111.png" alt="image-20200709163852111"></p>
+<h5 id="切换到我们自己安装的系统中"><a href="#切换到我们自己安装的系统中" class="headerlink" title="切换到我们自己安装的系统中"></a>切换到我们自己安装的系统中</h5><p>如果上一步没有安装成功这步进行不了的 上面没有无线的话就连接网线下载</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">arch-chroot &#x2F;mnt</span><br></pre></td></tr></table></figure>
+
+<h5 id="设置系统时间"><a href="#设置系统时间" class="headerlink" title="设置系统时间"></a>设置系统时间</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ln -sf &#x2F;usr&#x2F;share&#x2F;zoneinfo&#x2F;Asia&#x2F;Shanghai &#x2F;etc&#x2F;localtime  #设置时区为上海</span><br><span class="line"></span><br><span class="line">hwclock --systohc  #写入系统</span><br></pre></td></tr></table></figure>
+
+<h5 id="设置本地语言"><a href="#设置本地语言" class="headerlink" title="设置本地语言"></a>设置本地语言</h5><p>修改/etc/locale.gen文件中en_US.UTF-8 UTF-8 、zh_CN.UTF-8 UTF-8 两项 删除前面的注释</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vim &#x2F;etc&#x2F;locale.gen  </span><br><span class="line">en_US.UTF-8 UTF-8  #按&#x2F;en_US.UTF 回车输入i删除#  按esc</span><br><span class="line">zh_CN.UTF-8 UTF-8  #按&#x2F;zh_CN.UTF 回车输入i删除#  按esc  shft + : wq保存退出</span><br></pre></td></tr></table></figure>
+
+<p>生效配置文件执行下面命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">locale-gen</span><br></pre></td></tr></table></figure>
+
+<p>echo “LANG=en_US.UTF-8” &gt;&gt; /etc/locale.conf <del>~ (如果没有这个文件创建一个)</del> 想要中文就修改LANG后面的值</p>
+<h5 id="设置主机名"><a href="#设置主机名" class="headerlink" title="设置主机名"></a>设置主机名</h5><p>这里的xxx是你想要设置的主机名</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cat &gt;&gt; &#x2F;etc&#x2F;hosts&lt;&lt;EOF</span><br><span class="line">127.0.0.1    localhost.localdomain    localhost</span><br><span class="line">::1          localhost.localdomain    localhost</span><br><span class="line">127.0.1.1    xxxx.localdomain     xxxx</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
+
+<h5 id="设置root的密码"><a href="#设置root的密码" class="headerlink" title="设置root的密码"></a>设置root的密码</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">passwd #记好你的密码</span><br></pre></td></tr></table></figure>
+
+<p>安装cpu的编码（<strong>看你的处理器是不是inter的</strong> 非必须有的这个是）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pacman -S intel-ucode</span><br></pre></td></tr></table></figure>
+
+<h5 id="安装系统的引导让我们的系统开机自动进入"><a href="#安装系统的引导让我们的系统开机自动进入" class="headerlink" title="安装系统的引导让我们的系统开机自动进入"></a>安装系统的引导让我们的系统开机自动进入</h5><p><strong>对于BIOS系统</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pacman -S grub</span><br><span class="line">grub-install --target&#x3D;i386-pc &#x2F;dev&#x2F;sda4  #&#x2F;dev&#x2F;sda4是你自己的boot分区盘符我的是4</span><br><span class="line">grub-mkconfig -o &#x2F;boot&#x2F;grub&#x2F;grub.cfg</span><br></pre></td></tr></table></figure>
+
+<p>如果报错error will not proceed with blocklists 执行下面</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">grub-install --target&#x3D;i386-pc --recheck --debug --force &#x2F;dev&#x2F;sda</span><br><span class="line">grub-mkconfig -o &#x2F;boot&#x2F;grub&#x2F;grub.cfg</span><br></pre></td></tr></table></figure>
+
+<p><strong>对于UEFI系统的</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pacman -S grub efibootmgr</span><br><span class="line">grub-install --target&#x3D;x86_64-efi --efi-directory&#x3D;&#x2F;boot --bootloader-id&#x3D;ARCHGRUB</span><br><span class="line">grub-mkconfig -o &#x2F;boot&#x2F;grub&#x2F;grub.cfg</span><br></pre></td></tr></table></figure>
+
+<p>如果是双系统的需要安装os-prober</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pacman -S os-prober</span><br></pre></td></tr></table></figure>
+
+<h5 id="安装网络组件"><a href="#安装网络组件" class="headerlink" title="安装网络组件"></a>安装网络组件</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pacman -S iw wpa_supplicant dialog netctl dhcpcd networkmanager  #无线网络</span><br><span class="line">systemctl enable dhcpcd   #设置开机启动dhcpcd</span><br></pre></td></tr></table></figure>
+
+<h5 id="重启系统"><a href="#重启系统" class="headerlink" title="重启系统"></a>重启系统</h5><p>exit</p>
+<p>umount -R /mnt</p>
+<p>reboot</p>
+<p>恭喜你一个字符界面的archlinux 安装成功了 后续我会写一些优化图形界面的教程谢谢观看</p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>骑驴的绅士
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://www.devopsai.cn/2020/07/09/Archlinux%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%AE%89%E8%A3%85/" title="Archlinux系统的安装">http://www.devopsai.cn/2020/07/09/Archlinux系统的安装/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-Hans" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/07/07/Kubernetes%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF%EF%BC%88%E4%B8%80%EF%BC%89/" rel="prev" title="Kubernetes学习之路（一）">
+      <i class="fa fa-chevron-left"></i> Kubernetes学习之路（一）
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Archlinux系统的安装"><span class="nav-number">1.</span> <span class="nav-text">Archlinux系统的安装</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#准备环境"><span class="nav-number">1.1.</span> <span class="nav-text">准备环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#开始安装"><span class="nav-number">1.2.</span> <span class="nav-text">开始安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#验证启动模式"><span class="nav-number">1.2.1.</span> <span class="nav-text">验证启动模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#连接网络"><span class="nav-number">1.2.2.</span> <span class="nav-text">连接网络</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#网线连接方式"><span class="nav-number">1.2.2.0.1.</span> <span class="nav-text">网线连接方式</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#无线连接方式"><span class="nav-number">1.2.2.0.2.</span> <span class="nav-text">无线连接方式</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ADSL宽带连接"><span class="nav-number">1.2.2.0.3.</span> <span class="nav-text">ADSL宽带连接</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#测试网络是否连接成功"><span class="nav-number">1.2.2.0.4.</span> <span class="nav-text">测试网络是否连接成功</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#更新系统时间"><span class="nav-number">1.2.2.0.5.</span> <span class="nav-text">更新系统时间</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#查看磁盘分区盘符命令及分区"><span class="nav-number">1.2.2.0.6.</span> <span class="nav-text">查看磁盘分区盘符命令及分区</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#选择分区格式"><span class="nav-number">1.2.2.0.7.</span> <span class="nav-text">选择分区格式</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#格式化分区"><span class="nav-number">1.2.2.0.8.</span> <span class="nav-text">格式化分区</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#挂载我们格式化完的分区"><span class="nav-number">1.2.2.0.9.</span> <span class="nav-text">挂载我们格式化完的分区</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#修改镜像源"><span class="nav-number">1.2.2.0.10.</span> <span class="nav-text">修改镜像源</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#安装系统的基础包"><span class="nav-number">1.2.2.0.11.</span> <span class="nav-text">安装系统的基础包</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#安装fstab"><span class="nav-number">1.2.2.0.12.</span> <span class="nav-text">安装fstab</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#切换到我们自己安装的系统中"><span class="nav-number">1.2.2.0.13.</span> <span class="nav-text">切换到我们自己安装的系统中</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#设置系统时间"><span class="nav-number">1.2.2.0.14.</span> <span class="nav-text">设置系统时间</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#设置本地语言"><span class="nav-number">1.2.2.0.15.</span> <span class="nav-text">设置本地语言</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#设置主机名"><span class="nav-number">1.2.2.0.16.</span> <span class="nav-text">设置主机名</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#设置root的密码"><span class="nav-number">1.2.2.0.17.</span> <span class="nav-text">设置root的密码</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#安装系统的引导让我们的系统开机自动进入"><span class="nav-number">1.2.2.0.18.</span> <span class="nav-text">安装系统的引导让我们的系统开机自动进入</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#安装网络组件"><span class="nav-number">1.2.2.0.19.</span> <span class="nav-text">安装网络组件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#重启系统"><span class="nav-number">1.2.2.0.20.</span> <span class="nav-text">重启系统</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">骑驴的绅士</p>
+  <div class="site-description" itemprop="description">这是一个技术博客</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/137323747" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;137323747" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yyxin41@163.com" title="E-Mail → mailto:yyxin41@163.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-rss fa-fw"></i>RSS</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-Hans" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=1324024510&auto=1&height=66"></iframe>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">骑驴的绅士</span>
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+<span id="busuanzi_container_site_pv">
+    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+</span>
+<span id="busuanzi_container_site_uv">
+  本站总访问量<span id="busuanzi_value_site_uv"></span>次
+</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">14k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">13 分钟</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/love.js"></script>
